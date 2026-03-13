@@ -1,0 +1,20 @@
+﻿--- Running Test Case: Test Case 1 (Low Risk) ---
+Context: {'user_id': 'emp_01', 'device': 'corporate', 'location': 'local', 'network': 'office', 'application': 'email'}
+Risk Score: 0
+Final Decision: ALLOW
+
+--- Running Test Case: Test Case 2 (Medium Risk) ---
+Context: {'user_id': 'emp_01', 'device': 'personal', 'location': 'local', 'network': 'home', 'application': 'internal_tool'}
+Risk Score: 3
+Final Decision: MFA REQUIRED
+
+--- Running Test Case: Test Case 3 (Critical Risk) ---
+Context: {'user_id': 'unknown', 'device': 'personal', 'location': 'foreign', 'network': 'public_wifi', 'application': 'finance'}
+Risk Score: 12
+Final Decision: DENY
+
+--- Running Test Case: Test Case 4 (Policy Check) ---
+Context: {'user_id': 'emp_01', 'device': 'personal', 'location': 'local', 'network': 'home', 'application': 'finance'}
+Risk Score: 6
+Final Decision: LIMITED ACCESS
+
