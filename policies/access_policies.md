@@ -1,26 +1,41 @@
-# Access Policies
+# Access Policies (Zero Trust)
 
-This document defines the policy rules used by the Context-Aware Access Control system.
+This document defines the advanced context-aware policy rules.
 
-## Policy Rules
+## Context Scoring Matrix
 
-The access decision is determined by the total risk score calculated from contextual signals.
+The risk score is a sum of signals across four dimensions:
 
-| Risk Score | Decision | Description |
+### 1. Device Posture
+| Signal | Weight | Action on High Score |
 | :--- | :--- | :--- |
-| **0 – 2** | `ALLOW` | Full access granted to the requested resource. |
-| **3 – 5** | `MFA REQUIRED` | Access granted only after high-assurance authentication. |
-| **6 – 7** | `LIMITED ACCESS` | Access granted with restricted permissions (e.g., read-only, no downloads). |
-| **8+** | `DENY` | Access blocked due to critical risk level. |
+| Unmanaged Device | +3 | Limit Access |
+| Antivirus Disabled | +4 | Block / Remediation |
+| No Disk Encryption | +3 | Limit Access |
+| Outdated OS Patch | +2 | Remediation Prompt |
 
-## Context Scoring Model
+### 2. Location & Network
+| Signal | Weight |
+| :--- | :--- |
+| Foreign Country | +4 |
+| Public WiFi | +3 |
+| Home Network | +1 |
+| Corporate/Whitelisted | 0 |
 
-The Risk Scoring Engine uses the following weights to calculate the total score:
+### 3. Application Risk
+| Signal | Weight |
+| :--- | :--- |
+| Critical (M&A, HR, Finance) | +5 |
+| High (CRM, Internal Tools) | +3 |
+| Low (Wiki, Public Site) | 0 |
 
-| Signal | Condition | Weight |
+## Dynamic Access Decisions
+
+| Total Risk Score | Decision Action | Security Response |
 | :--- | :--- | :--- |
-| **Device** | Personal Device | +2 |
-| **Network** | Public WiFi | +3 |
-| **Location** | Foreign Country | +4 |
-| **Application** | Finance / Sensitive App | +3 |
-| **Other** | Corporate Device / Office Network | 0 |
+| **0 – 2** | `ALLOW` | Full access granted. |
+| **3 – 5** | `MFA REQUIRED` | Require Step-up Auth. |
+| **3 – 5 (WiFi + High Risk App)** | `BROWSER ISOLATION` | Render in secure container. |
+| **6 – 7** | `LIMITED ACCESS` | Read-only; No Download/Print. |
+| **6 – 7 (Posture Issue)** | `REMEDIATION` | Captive portal for updates. |
+| **8+** | `DENY` | Access Blocked; **Alert Security Team**. |

@@ -6,35 +6,21 @@ This project demonstrates a dynamic, risk-based access control system built on Z
 
 Traditional security models focus on perimeter defense. Zero Trust assumes that threats exist both inside and outside the network. This system evaluates every access request by collecting contextual signals and calculating a risk score to determine the appropriate access level.
 
-## Features
+## Security Concepts
 
-- **Dynamic Risk Evaluation**: Real-time assessment of signals (User, Device, Location, App).
-- **Context-Aware Policy Engine**: Rules-based decision making.
-- **Granular Access Levels**: From full access to outright denial.
-- **Zero Trust Architecture**: Continuous verification of identity and environment.
+This system implements **Identity-Aware Proxy (IAP)** and **least-privilege** principles:
+- **Micro-segmentation**: Connections are established directly to applications, not the network.
+- **Continuous Verification**: Risk is assessed on every request, not just at login.
+- **Adaptive Response**: Security controls scale based on real-time risk.
 
-## System Architecture
+## Use Case Scenarios
 
-The workflow follows these steps:
-`User -> Authentication -> Context Collection -> Risk Engine -> Policy Engine -> Access Decision`
-
-See [architecture-diagram.md](./architecture/architecture-diagram.md) for more details.
-
-## Policy Rules
-
-- **Low Risk (0-2)**: ALLOW (Full Access)
-- **Medium Risk (3-5)**: MFA REQUIRED
-- **High Risk (6-7)**: LIMITED ACCESS (e.g., Read-only)
-- **Critical Risk (8+)**: DENY (Access Blocked)
-
-## How to Run the Demo
-
-1. Ensure you have Python 3.x installed.
-2. Navigate to the `demo/` directory.
-3. Run the demo script:
-   ```bash
-   python run_demo.py
-   ```
+The system is tested against the following real-world scenarios:
+1. **Finance Dept Access to ERP**: Full access from corporate device on trusted network.
+2. **Contractor Access to Git**: Restricted access for guest users on personal devices.
+3. **Executive Foreign Access**: Read-only access and security alerts for sensitive data in foreign locations.
+4. **IT Support Tools**: Whitelisted home access for authorized technicians.
+5. **High-Risk App from Low-Trust Site**: Browser isolation for Salesforce access from public WiFi.
 
 ## Folder Structure
 
